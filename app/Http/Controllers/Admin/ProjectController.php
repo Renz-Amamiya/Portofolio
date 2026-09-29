@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProjectRequest;
 use App\Models\PortfolioItem;
 use App\Services\ImageUploadService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -81,12 +82,44 @@ class ProjectController extends Controller
         return back()->with('success', 'Project deleted.');
     }
 
-    public function toggle(Request $request, PortfolioItem $project): RedirectResponse
+    public function toggle(Request $request, PortfolioItem $project): JsonResponse|RedirectResponse
     {
-        $project->update(['published' => $request->boolean('published')]);
+        $published = $request->has('published')
+            ? $request->boolean('published')
+            : ! $project->published;
+
+        $project->update(['published' => $published]);
         Cache::forget('projects');
 
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'published' => (bool) $project->published,
+                'message' => $project->published ? 'Project published.' : 'Project unpublished.',
+            ]);
+        }
+
         return back()->with('success', $project->published ? 'Project published.' : 'Project unpublished.');
+    }
+
+    public function toggleFeatured(Request $request, PortfolioItem $project): JsonResponse|RedirectResponse
+    {
+        $featured = $request->has('featured')
+            ? $request->boolean('featured')
+            : ! $project->featured;
+
+        $project->update(['featured' => $featured]);
+        Cache::forget('projects');
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'featured' => (bool) $project->featured,
+                'message' => $project->featured ? 'Project featured on home.' : 'Project unfeatured from home.',
+            ]);
+        }
+
+        return back()->with('success', $project->featured ? 'Project featured on home.' : 'Project unfeatured from home.');
     }
 
     public function reorder(Request $request): RedirectResponse

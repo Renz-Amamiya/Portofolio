@@ -88,23 +88,23 @@
             <div class="border-t rule flex flex-col">
                 @foreach ($featuredProjects as $index => $project)
                     <a href="{{ route('projects.show', $project->slug) }}"
-                       class="project-row group flex flex-col md:flex-row md:items-center gap-6 md:gap-12 border-b rule py-10 transition-colors hover:bg-[color-mix(in_srgb,var(--color-accent)_3%,transparent)]">
+                       class="project-row group flex flex-col md:flex-row md:items-center gap-6 md:gap-12 border-b rule py-10 transition-colors hover:bg-[color-mix(in_srgb,var(--fg)_4%,transparent)]">
                         <span class="font-mono text-xs text-muted md:w-12 shrink-0">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
                         
                         <div class="flex-1 min-w-0">
-                            <h3 class="font-display text-4xl md:text-6xl tracking-tight transition-all duration-500 group-hover:italic group-hover:text-accent group-hover:translate-x-4">
+                            <h3 class="font-display text-4xl md:text-6xl tracking-tight transition-all duration-500 text-[var(--fg)] group-hover:italic group-hover:translate-x-4">
                                 {{ $project->title }}
                             </h3>
                             <div class="flex flex-wrap gap-3 mt-4 md:translate-x-0 transition-transform duration-500 group-hover:translate-x-4">
                                 @foreach (array_slice($project->technologies, 0, 3) as $tech)
-                                    <span class="font-mono text-[10px] uppercase tracking-wider text-muted border rule px-2 py-1">{{ $tech }}</span>
+                                    <span class="font-mono text-[10px] uppercase tracking-wider text-muted border rule px-2 py-1 group-hover:border-[var(--fg)] transition-colors">{{ $tech }}</span>
                                 @endforeach
                             </div>
                         </div>
                         
                         <div class="flex items-center justify-between md:justify-end gap-8 shrink-0 mt-4 md:mt-0">
-                            <span class="font-mono text-sm">{{ $project->year }}</span>
-                            <span class="w-10 h-10 rounded-full border rule flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:text-[var(--color-paper)] transition-all duration-300">
+                            <span class="font-mono text-sm text-muted group-hover:text-[var(--fg)] transition-colors">{{ $project->year }}</span>
+                            <span class="w-10 h-10 rounded-full border rule flex items-center justify-center group-hover:bg-[var(--fg)] group-hover:border-[var(--fg)] group-hover:text-[var(--bg)] transition-all duration-300">
                                 <svg class="w-4 h-4 transform -rotate-45 group-hover:rotate-0 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                             </span>
                         </div>
@@ -145,6 +145,28 @@
             @endif
         </div>
     </section>
+
+    {{-- EDUCATION: row list --}}
+    @if ($education->isNotEmpty())
+    <section class="border-b rule bg-[var(--color-ink)] text-[var(--color-paper)]">
+        <div class="mx-auto max-w-[1200px] px-5 md:px-8 py-20 md:py-32">
+            <p class="font-mono text-xs uppercase tracking-[0.2em] opacity-50 mb-12">04 / Education</p>
+
+            <div class="border-t border-[color-mix(in_srgb,var(--color-paper)_20%,transparent)]">
+                @foreach ($education as $entry)
+                    <div class="grid grid-cols-12 gap-4 md:gap-6 border-b border-[color-mix(in_srgb,var(--color-paper)_20%,transparent)] py-6" data-reveal>
+                        <div class="col-span-12 md:col-span-7">
+                            <h3 class="font-display text-2xl md:text-3xl tracking-tight">{{ $entry->degree }}</h3>
+                            <p class="mt-1 text-sm opacity-60">{{ $entry->institution }}@if ($entry->location) · {{ $entry->location }}@endif</p>
+                        </div>
+                        <div class="col-span-7 md:col-span-3 font-mono text-xs opacity-60 self-center">{{ $entry->period }}</div>
+                        <div class="col-span-5 md:col-span-2 font-mono text-xs text-right md:text-left opacity-60 self-center">@if ($entry->grade) {{ $entry->grade }} @else n/a @endif</div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
 
     {{-- SKILLS: colorful logos and marquee --}}
     <section class="border-b rule bg-transparent">

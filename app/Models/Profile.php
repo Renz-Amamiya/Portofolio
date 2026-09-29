@@ -14,7 +14,7 @@ class Profile extends Model
 
     public static function current(): self
     {
-        return static::query()->firstOrCreate();
+        return static::query()->firstOrCreate([], ['name' => 'Your Name']);
     }
 
     public function getPhotoUrlAttribute(): ?string

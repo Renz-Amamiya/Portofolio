@@ -17,6 +17,7 @@
     --fg: var(--color-ink);
     --rule: var(--color-rule);
     --muted: var(--color-muted);
+    --color-accent: #000000;
 }
 
 .dark {
@@ -25,6 +26,7 @@
     --fg: #FFFFFF;
     --rule: #333333;
     --muted: #999999;
+    --color-accent: #FFFFFF;
 }
 
 html {

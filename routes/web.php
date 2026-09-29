@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EducationController;
 use App\Http\Controllers\Admin\ExperienceController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ProjectController;
@@ -33,10 +34,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::post('/projects/reorder', [ProjectController::class, 'reorder'])->name('projects.reorder');
     Route::patch('/projects/{project}/toggle', [ProjectController::class, 'toggle'])->name('projects.toggle');
+    Route::patch('/projects/{project}/toggle-featured', [ProjectController::class, 'toggleFeatured'])->name('projects.toggle-featured');
     Route::resource('projects', ProjectController::class)->except(['show']);
 
     Route::post('/experiences/reorder', [ExperienceController::class, 'reorder'])->name('experiences.reorder');
     Route::resource('experiences', ExperienceController::class)->except(['show']);
+
+    Route::post('/educations/reorder', [EducationController::class, 'reorder'])->name('educations.reorder');
+    Route::resource('educations', EducationController::class)->except(['show']);
 
     Route::post('/skills/reorder', [SkillController::class, 'reorder'])->name('skills.reorder');
     Route::resource('skills', SkillController::class)->except(['show']);

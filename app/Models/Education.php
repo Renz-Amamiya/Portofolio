@@ -23,4 +23,11 @@ class Education extends Model
     {
         return $query->orderByDesc('start_date');
     }
+
+    public function getPeriodAttribute(): string
+    {
+        $end = $this->current ? 'Present' : ($this->end_date?->format('M Y') ?? 'Present');
+
+        return $this->start_date->format('M Y') . ' to ' . $end;
+    }
 }

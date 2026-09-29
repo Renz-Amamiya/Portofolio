@@ -27,7 +27,7 @@ class HomeController extends Controller
             'skills' => Skill::ordered()->get(),
             'certificates' => Certificate::ordered()->limit(4)->get(),
             'socials' => SocialLink::ordered()->get(),
-            'education' => Education::ordered()->first(),
+            'education' => Education::ordered()->get(),
         ]);
     }
 }

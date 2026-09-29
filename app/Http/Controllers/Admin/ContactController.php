@@ -30,6 +30,7 @@ class ContactController extends Controller
     public function markRead(Contact $contact): RedirectResponse
     {
         $contact->update(['read' => true, 'read_at' => now()]);
+        Cache::forget('unread-messages');
 
         return back()->with('success', 'Marked as read.');
     }

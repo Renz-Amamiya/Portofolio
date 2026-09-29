@@ -31,24 +31,32 @@
                                 <a href="{{ route('admin.projects.edit', $project) }}" class="font-display text-xl hover:text-accent transition-colors truncate">
                                     {{ $project->title }}
                                 </a>
-                                @if ($project->featured)
-                                    <span class="font-mono text-[9px] uppercase tracking-wider text-accent border border-accent px-1.5 py-0.5">Featured</span>
-                                @endif
                             </div>
                             <p class="text-sm text-muted truncate mt-0.5">{{ $project->description }}</p>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-3 md:gap-5 shrink-0">
+                    <div class="flex items-center gap-3 md:gap-4 shrink-0 flex-wrap">
                         <span class="font-mono text-xs text-muted">{{ $project->year }}</span>
+
+                        {{-- Toggle featured on home without reload --}}
+                        <div x-data="featureToggle('{{ route('admin.projects.toggle-featured', $project) }}', {{ $project->featured ? 'true' : 'false' }})">
+                            <button type="button" @click="submit()"
+                                    class="font-mono text-[10px] uppercase tracking-wider px-3 py-2 border transition-colors {{ $project->featured ? 'border-accent text-accent' : 'rule text-muted' }}"
+                                    :class="on ? 'border-accent text-accent' : 'rule text-muted'"
+                                    :title="on ? 'Ditampilkan di halaman depan (Featured)' : 'Klik untuk tampilkan di halaman depan (Featured)'"
+                                    :disabled="loading">
+                                <span x-text="on ? 'Featured' : 'Standard'">{{ $project->featured ? 'Featured' : 'Standard' }}</span>
+                            </button>
+                        </div>
 
                         {{-- Toggle publish without reload --}}
                         <div x-data="publishToggle('{{ route('admin.projects.toggle', $project) }}', {{ $project->published ? 'true' : 'false' }})">
                             <button type="button" @click="submit()"
-                                    class="font-mono text-[10px] uppercase tracking-wider px-3 py-2 border transition-colors"
+                                    class="font-mono text-[10px] uppercase tracking-wider px-3 py-2 border transition-colors {{ $project->published ? 'border-accent text-accent' : 'rule text-muted' }}"
                                     :class="on ? 'border-accent text-accent' : 'rule text-muted'"
                                     :disabled="loading">
-                                <span x-text="on ? 'Published' : 'Draft'"></span>
+                                <span x-text="on ? 'Published' : 'Draft'">{{ $project->published ? 'Published' : 'Draft' }}</span>
                             </button>
                         </div>
 

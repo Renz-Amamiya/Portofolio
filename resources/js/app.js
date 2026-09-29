@@ -30,6 +30,40 @@ document.addEventListener('alpine:init', () => {
                     body: JSON.stringify({ published: this.on }),
                 });
                 if (!res.ok) throw new Error('Request failed');
+                const data = await res.json();
+                if (data && typeof data.published === 'boolean') {
+                    this.on = data.published;
+                }
+            } catch (e) {
+                this.on = previous;
+            } finally {
+                this.loading = false;
+            }
+        },
+    }));
+
+    Alpine.data('featureToggle', (url, featured) => ({
+        on: featured,
+        loading: false,
+        async submit() {
+            this.loading = true;
+            const previous = this.on;
+            this.on = !this.on;
+            try {
+                const res = await fetch(url, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ featured: this.on }),
+                });
+                if (!res.ok) throw new Error('Request failed');
+                const data = await res.json();
+                if (data && typeof data.featured === 'boolean') {
+                    this.on = data.featured;
+                }
             } catch (e) {
                 this.on = previous;
             } finally {
