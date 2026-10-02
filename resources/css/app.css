@@ -21,19 +21,25 @@
 }
 
 .dark {
-    /* Kept for system dark mode support if needed, but defaults to light */
     --bg: #111111;
     --fg: #FFFFFF;
     --rule: #333333;
     --muted: #999999;
+    --color-paper: #111111;
+    --color-ink: #FFFFFF;
     --color-accent: #FFFFFF;
 }
 
 html {
     background: var(--bg);
     color: var(--fg);
+    color-scheme: light;
     font-feature-settings: "kern" 1, "liga" 1;
     -webkit-font-smoothing: antialiased;
+}
+
+html.dark {
+    color-scheme: dark;
 }
 
 body {
@@ -86,7 +92,7 @@ html.js-active [data-dashboard] {
 
 [x-cloak] { display: none !important; }
 
-.prose-editorial { color: var(--fg); }
+.prose-editorial { color: inherit; }
 .prose-editorial h2 {
     font-family: var(--font-display);
     font-size: clamp(1.5rem, 3vw, 2rem);
@@ -124,22 +130,22 @@ html.js-active [data-dashboard] {
     left: 0;
     top: 0.4em;
     font-size: 0.5em;
-    color: var(--color-accent);
+    color: currentColor;
 }
 .prose-editorial a {
-    color: var(--color-accent);
+    color: currentColor;
     text-decoration: underline;
     text-underline-offset: 3px;
 }
-.prose-editorial strong { color: var(--fg); font-weight: 600; }
+.prose-editorial strong { color: currentColor; font-weight: 600; }
 .prose-editorial code {
     font-family: var(--font-mono);
     font-size: 0.875em;
-    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    background: color-mix(in srgb, currentColor 12%, transparent);
     padding: 0.15em 0.4em;
 }
 .prose-editorial blockquote {
-    border-left: 2px solid var(--color-accent);
+    border-left: 2px solid currentColor;
     padding-left: 1em;
     font-style: italic;
     color: var(--muted);
