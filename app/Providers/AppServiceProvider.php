@@ -7,6 +7,7 @@ use App\Models\Profile;
 use App\Models\Setting;
 use App\Models\SocialLink;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
+
         View::composer('components.layouts.site', function ($view) {
             $view->with([
                 'profile' => Cache::rememberForever('profile', fn () => Profile::current()),
